@@ -1,4 +1,15 @@
 ---
+title: "Peer-graded Assignment: Reproducible Research Course Project 1"
+output: 
+  html_document:
+    keep_md: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+---
 ### Peer-graded Assignment: Reproducible Research Course Project 1
 ### Objective: Collect, work with, and analyze the given dataset
 ### Astudent44
@@ -42,6 +53,12 @@ hist(as.numeric(stepsPerDay$Steps),
 dev.off()
 ```
 
+```{r echo = FALSE}
+hist(as.numeric(stepsPerDay$Steps), 
+     main = "Total Number of Steps Taken Each Day", 
+     xlab = "Steps", col = "Blue")
+```
+
 #### Calculate mean and median steps taken per day
 ```{r}
 print(paste("Mean Number of Steps Taken Each Day = ",
@@ -68,6 +85,13 @@ plot(avgDailyActivity$Interval, avgDailyActivity$Mean, type = "l",
      ylab = "Average Number of Steps Taken Averaged Across All Days",
      main = "Average Daily Activity Pattern")
 dev.off()
+```
+
+```{r echo = FALSE}
+plot(avgDailyActivity$Interval, avgDailyActivity$Mean, type = "l", 
+     col = "Blue", lwd = 2, xlab = "Interval (by 5-minute)", 
+     ylab = "Average Number of Steps Taken Averaged Across All Days",
+     main = "Average Daily Activity Pattern")
 ```
 
 #### Determine which interval has the greatest number of steps
@@ -103,13 +127,11 @@ filleddata <- transform(dataset, steps = ifelse(is.na(dataset$steps),
 ```{r}
 filledstepsPerDay <- aggregate(filleddata$steps ~ filleddata$date, FUN = sum,)
 colnames(filledstepsPerDay) <- c("Date", "Steps")
-
 png("plot3.png", height = 480, width = 480)
 hist(as.numeric(filledstepsPerDay$Steps), 
      main = "Filled Total Number of Steps Taken Each Day", 
      xlab = "Steps", col = "Blue")
 dev.off()
-
 print(paste("Filled Mean Number of Steps Taken Each Day = ",
             mean(filledstepsPerDay$Steps)))
 print(paste("Filled Median Number of Steps Taken Each Day = ",
@@ -120,6 +142,11 @@ print(paste("These values DO differ from those of part 1.  By replacing",
             " is greater than the lowest number of steps per day."))
 ```
 
+```{r echo = FALSE}
+hist(as.numeric(filledstepsPerDay$Steps), 
+     main = "Filled Total Number of Steps Taken Each Day", 
+     xlab = "Steps", col = "Blue")
+```
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
@@ -144,4 +171,14 @@ plot<- ggplot(avgDayDailyActivity, aes(x = interval , y = steps, color = dateTyp
   facet_wrap(~dateType, ncol = 1, nrow=2)
 print(plot)
 dev.off()
+```
+
+```{r echo = FALSE}
+plot<- ggplot(avgDayDailyActivity, aes(x = interval , y = steps, color = dateType)) +
+  geom_line() +
+  labs(title = "Average Daily Activity Pattern by Date Type", 
+       x = "Interval (by 5-minute)", 
+       y = "Average Number of Steps") +
+  facet_wrap(~dateType, ncol = 1, nrow=2)
+print(plot)
 ```
