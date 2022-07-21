@@ -1,32 +1,65 @@
+---
+title: "Peer-graded Assignment: Reproducible Research Course Project 1"
+output: 
+  html_document:
+    keep_md: true
+---
 
 
-```r
+
+---
 ### Peer-graded Assignment: Reproducible Research Course Project 1
 ### Objective: Collect, work with, and analyze the given dataset
 ### Astudent44
-  
-  
-## Loading and pre-processing the data
+---
+
+
+## Loading and preprocessing the data
 #### Load in libraries
+
+```r
 library(ggplot2)
 library(plyr)
 library(lubridate)
+```
+
+```
+## 
+## Attaching package: 'lubridate'
+```
+
+```
+## The following objects are masked from 'package:base':
+## 
+##     date, intersect, setdiff, union
+```
 
 #### Assume that raw data file is in the working directory
+
+```r
 dataset <- read.csv("activity.csv")
+```
 
 #### Clean data by formatting date and removing na
+
+```r
 dataset$date <- ymd(dataset$date)
 cleandata <- dataset[!is.na(dataset$steps),]
-  
+```
+
 
 
 ## What is mean total number of steps taken per day?
 #### Create a summary table of dates and steps
+
+```r
 stepsPerDay <- aggregate(cleandata$steps ~ cleandata$date, FUN = sum,)
 colnames(stepsPerDay) <- c("Date", "Steps")
+```
 
 #### Graph steps per day, total steps by frequency
+
+```r
 png("plot1.png", height = 480, width = 480)
 hist(as.numeric(stepsPerDay$Steps), 
      main = "Total Number of Steps Taken Each Day", 
@@ -39,8 +72,11 @@ dev.off()
 ##   2
 ```
 
-```r
+![](PA1_template_files/figure-html/unnamed-chunk-6-1.png)<!-- -->
+
 #### Calculate mean and median steps taken per day
+
+```r
 print(paste("Mean Number of Steps Taken Each Day = ",
             mean(stepsPerDay$Steps)))
 ```
@@ -58,14 +94,20 @@ print(paste("Median Number of Steps Taken Each Day = ",
 ## [1] "Median Number of Steps Taken Each Day =  10765"
 ```
 
-```r
+
+
 ## What is the average daily activity pattern?
 #### Make a time series plot of the 5-minute interval and the average steps
+
+```r
 avgDailyActivity <- aggregate(cleandata$steps, 
                               by = list(cleandata$interval), FUN = mean)
 colnames(avgDailyActivity) <- c("Interval", "Mean")
+```
 
 #### Plot average daily activity as a line graph
+
+```r
 png("plot2.png", height = 480, width = 640)
 plot(avgDailyActivity$Interval, avgDailyActivity$Mean, type = "l", 
      col = "Blue", lwd = 2, xlab = "Interval (by 5-minute)", 
@@ -79,8 +121,11 @@ dev.off()
 ##   2
 ```
 
-```r
+![](PA1_template_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
+
 #### Determine which interval has the greatest number of steps
+
+```r
 intervalSteps <- aggregate(cleandata$steps ~ cleandata$interval, FUN = sum,)
 colnames(intervalSteps) <- c("Interval", "Steps")
 print(paste("The 5-minute with the Maximum Number of Steps = ",
@@ -91,9 +136,12 @@ print(paste("The 5-minute with the Maximum Number of Steps = ",
 ## [1] "The 5-minute with the Maximum Number of Steps =  835"
 ```
 
-```r
+
+
 ## Imputing missing values
 #### Calculate the number of NA values 
+
+```r
 print(paste("The Total Number of Missing Values in the Dataset = ",
             sum(is.na(dataset$steps))))
 ```
@@ -102,20 +150,24 @@ print(paste("The Total Number of Missing Values in the Dataset = ",
 ## [1] "The Total Number of Missing Values in the Dataset =  2304"
 ```
 
-```r
 #### Create new data set with NA values filled in
 #### Strategy used is to fill in with mean for that day
+
+```r
 avgSteps <- aggregate(dataset$steps ~ dataset$date, FUN = mean,)
 colnames(avgSteps) <- c("Date", "Steps")
 filleddata <- transform(dataset, steps = ifelse(is.na(dataset$steps), 
                                                 yes = avgSteps$Steps,
                                                 no = dataset$steps))
+```
 
 #### Redo part 1 with the new data set
+#### Graph steps per day, total steps by frequency
+#### Calculate mean and median steps taken per day
+
+```r
 filledstepsPerDay <- aggregate(filleddata$steps ~ filleddata$date, FUN = sum,)
 colnames(filledstepsPerDay) <- c("Date", "Steps")
-
-#### Graph steps per day, total steps by frequency
 png("plot3.png", height = 480, width = 480)
 hist(as.numeric(filledstepsPerDay$Steps), 
      main = "Filled Total Number of Steps Taken Each Day", 
@@ -129,7 +181,6 @@ dev.off()
 ```
 
 ```r
-#### Calculate mean and median steps taken per day
 print(paste("Filled Mean Number of Steps Taken Each Day = ",
             mean(filledstepsPerDay$Steps)))
 ```
@@ -158,15 +209,22 @@ print(paste("These values DO differ from those of part 1.  By replacing",
 ## [1] "These values DO differ from those of part 1.  By replacing  the NA values with the average number of steps taken  per day the mean and median increase because the average  is greater than the lowest number of steps per day."
 ```
 
-```r
+![](PA1_template_files/figure-html/unnamed-chunk-15-1.png)<!-- -->
+
+
 ## Are there differences in activity patterns between weekdays and weekends?
 #### Add new variable column to the filled data set
+
+```r
 dayName <- weekdays(filleddata$date)
 filledweekdata <- cbind(filleddata, dayName)
 filledweekdata$dateType <- ifelse(filledweekdata$dayName %in% c("Saturday", "Sunday"),
                                   "Weekend", "Weekday")
+```
 
 #### Plot average daily activity as a line graph for dateType
+
+```r
 avgDayDailyActivity <- aggregate(steps~interval + dateType, 
                                  filledweekdata, FUN = mean)
 png("plot4.png", height = 480, width = 640)
@@ -185,3 +243,4 @@ dev.off()
 ##   2
 ```
 
+![](PA1_template_files/figure-html/unnamed-chunk-18-1.png)<!-- -->
