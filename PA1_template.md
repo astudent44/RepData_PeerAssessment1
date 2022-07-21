@@ -67,11 +67,6 @@ hist(as.numeric(stepsPerDay$Steps),
 dev.off()
 ```
 
-```
-## png 
-##   2
-```
-
 ![](PA1_template_files/figure-html/unnamed-chunk-6-1.png)<!-- -->
 
 #### Calculate mean and median steps taken per day
@@ -114,11 +109,6 @@ plot(avgDailyActivity$Interval, avgDailyActivity$Mean, type = "l",
      ylab = "Average Number of Steps Taken Averaged Across All Days",
      main = "Average Daily Activity Pattern")
 dev.off()
-```
-
-```
-## png 
-##   2
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
@@ -175,10 +165,6 @@ hist(as.numeric(filledstepsPerDay$Steps),
 dev.off()
 ```
 
-```
-## png 
-##   2
-```
 
 ```r
 print(paste("Filled Mean Number of Steps Taken Each Day = ",
@@ -236,11 +222,6 @@ plot<- ggplot(avgDayDailyActivity, aes(x = interval , y = steps, color = dateTyp
   facet_wrap(~dateType, ncol = 1, nrow=2)
 print(plot)
 dev.off()
-```
-
-```
-## png 
-##   2
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-18-1.png)<!-- -->
