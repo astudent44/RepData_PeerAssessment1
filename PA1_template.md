@@ -111,7 +111,7 @@ plot(avgDailyActivity$Interval, avgDailyActivity$Mean, type = "l",
 dev.off()
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
+![](plot2.png)<!-- -->
 
 #### Determine which interval has the greatest number of steps
 
@@ -195,7 +195,7 @@ print(paste("These values DO differ from those of part 1.  By replacing",
 ## [1] "These values DO differ from those of part 1.  By replacing  the NA values with the average number of steps taken  per day the mean and median increase because the average  is greater than the lowest number of steps per day."
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-15-1.png)<!-- -->
+![](plot3.png)<!-- -->
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
@@ -224,4 +224,4 @@ print(plot)
 dev.off()
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-18-1.png)<!-- -->
+![](plot4.png)<!-- -->
