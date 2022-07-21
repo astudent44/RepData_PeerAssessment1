@@ -67,7 +67,7 @@ hist(as.numeric(stepsPerDay$Steps),
 dev.off()
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-6-1.png)<!-- -->
+![](plot1.png)<!-- -->
 
 #### Calculate mean and median steps taken per day
 
